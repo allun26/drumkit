@@ -20,6 +20,7 @@ keys.forEach(key =>
         
         let newButton = document.createElement("button");
         newButton.innerText = "Change Keybind";
+        newButton.classList.add('changeKeybind') // class to style the buttons created in css
         newButton.addEventListener("click", e => 
             {
                 clickedButton = e.target;
