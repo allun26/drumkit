@@ -14,4 +14,38 @@ function removeTransition(e) {
     this.classList.remove('playing');
 }
 const keys = document.querySelectorAll('.key');
-keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+keys.forEach(key => 
+    {
+        key.addEventListener('transitionend', removeTransition);
+        
+        let newButton = document.createElement("button");
+        newButton.innerText = "Change Keybind";
+        newButton.addEventListener("click", e => 
+            {
+                clickedButton = e.target;
+
+                let tempFunc = e => 
+                {
+                    ChangeKeyBind(e.keyCode, e.key);
+                    window.removeEventListener("keyup", tempFunc);
+                };
+
+                window.addEventListener("keyup", tempFunc);
+            });
+        
+        key.appendChild(newButton);
+
+    }
+);
+
+let clickedButton;
+function ChangeKeyBind(newKeyCode, newKeyName){
+    let currentKey = clickedButton.parentNode;
+    let currentAudio = document.querySelector(`audio[data-key="${currentKey.getAttribute("data-key")}"]`);
+
+    currentKey.setAttribute("data-key", newKeyCode);
+    currentKey.children[0].innerText = newKeyName.toUpperCase();
+
+    currentAudio.setAttribute("data-key", newKeyCode);
+
+}
