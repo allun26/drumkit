@@ -22,14 +22,15 @@ keys.forEach(key =>
         newButton.innerText = "Change Keybind";
         newButton.addEventListener("click", e => 
             {
-                clickedDataKey = e.target.parentNode.getAttribute("data-key");
+                clickedButton = e.target;
 
-                let tempEvent = window.addEventListener("keyup", e => 
+                let tempFunc = e => 
                 {
                     ChangeKeyBind(e.keyCode, e.key);
-                    window.removeEventListener("keyup", tempEvent);
-                });
+                    window.removeEventListener("keyup", tempFunc);
+                };
 
+                window.addEventListener("keyup", tempFunc);
             });
         
         key.appendChild(newButton);
@@ -37,10 +38,10 @@ keys.forEach(key =>
     }
 );
 
-let clickedDataKey;
+let clickedButton;
 function ChangeKeyBind(newKeyCode, newKeyName){
-    let currentKey = document.querySelector(`.key[data-key="${clickedDataKey}"]`);
-    let currentAudio = document.querySelector(`audio[data-key="${clickedDataKey}"]`);
+    let currentKey = clickedButton.parentNode;
+    let currentAudio = document.querySelector(`audio[data-key="${currentKey.getAttribute("data-key")}"]`);
 
     currentKey.setAttribute("data-key", newKeyCode);
     currentKey.children[0].innerText = newKeyName.toUpperCase();
